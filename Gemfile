@@ -7,7 +7,7 @@ gem 'rails', '4.0.0'
 gem 'sqlite3'
 
 gem 'roo'
-gem 'paperclip'
+gem 'protected_attributes'
 
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.0'
@@ -29,6 +29,7 @@ gem 'turbolinks'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 1.2'
+gem "paperclip", "~> 3.0"
 
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
@@ -45,4 +46,5 @@ end
 # gem 'capistrano', group: :development
 
 # Use debugger
-# gem 'debugger', group: [:development, :test]
+gem 'pry', group: [:development, :test]
+

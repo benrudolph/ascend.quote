@@ -1,0 +1,5 @@
+<h1>Prepare your spreadsheet for Frontline!</h1>
+<%= form_for @sheet, :url => '/quoted', :html => { :multipart => true } do |form| %>
+  <%= form.file_field :sheet %>
+  <%= form.submit "Create" %>
+<% end %>
