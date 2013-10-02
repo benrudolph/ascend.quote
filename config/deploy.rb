@@ -37,7 +37,7 @@ namespace :deploy do
   end
 end
 task :simlink_database, :roles => :app do
-  run "ln -s ~/diabetes.yml /var/www/quote-it/current/config/database.yml"
+  run "ln -s ~/quote-it.yml /var/www/quote-it/current/config/database.yml"
 end
 
 after "deploy", :simlink_database
