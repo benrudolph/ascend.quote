@@ -144,7 +144,7 @@ DEPENDENCIES
   paperclip (~> 3.0)
   protected_attributes
   pry
-  rails (= 4.0.0)
+  rails (>= 4.0.0)
   roo
   sass-rails (~> 4.0.0)
   sdoc
