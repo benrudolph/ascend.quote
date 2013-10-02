@@ -35,5 +35,6 @@ class ApplicationController < ActionController::Base
     end
 
     send_file csv_file, :type => 'text/csv; charset=iso-8859-1; header=present', :disposition => "attachment;data=#{csv_file}"
+
   end
 end

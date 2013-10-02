@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131002171255) do
+ActiveRecord::Schema.define(version: 20131002200012) do
 
   create_table "sheets", force: true do |t|
     t.datetime "created_at"
@@ -20,7 +20,7 @@ ActiveRecord::Schema.define(version: 20131002171255) do
     t.string   "sheet_content_type"
     t.integer  "sheet_file_size"
     t.datetime "sheet_updated_at"
-    t.string   "title",              default: "mycsv"
+    t.string   "title"
     t.string   "csv_file_name"
     t.string   "csv_content_type"
     t.integer  "csv_file_size"

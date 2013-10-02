@@ -1,5 +1,41 @@
-<h1>Prepare your spreadsheet for Frontline!</h1>
-<%= form_for @sheet, :url => '/quoted', :html => { :multipart => true } do |form| %>
-  <%= form.file_field :sheet %>
-  <%= form.submit "Create" %>
-<% end %>
+<nav class="navbar navbar-static-top navbar-inverse" role="navigation">
+  <div class="navbar-header">
+    <div class="navbar-brand" >Prepare your spreadsheet for FrontlineSMS!</div>
+  </div>
+</nav>
+<div class="row">
+  <div class="col-md-9 col-md-offset-1">
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-3 col-md-offset-1 well">
+    <h2>About</h2>
+    <p>
+    FrontlineSMS requires a certain format to upload contacts to its system. Excel doesn't make it easy to format it properly for FrontlineSMS. This tool allows you to upload an Excel file and will convert it to a CSV with quotes around all the fields, a requirement for uploading contacts. Here are the requirements to keep in mind while uploading contacts to FrontlineSMS:
+      <ul>
+        <li>All fields need to be in double quotes</li>
+        <li>There must be a column that is labeled "Name"</li>
+        <li>The phone number must be recorded under the column "Mobile Number"</li>
+        <li>The phone numbers must be in international format and have a '+' in the front</li>
+      </ul>
+      <a target="_blank" href="https://gist.github.com/benrudolph/6582557/raw/252b6016edfaf60d320e90263cf1f050829233b0/FrontlineSMS_Contact_Export_20130916.csv">Here</a> is an example of a properly formated CSV to be imported into FrontlineSMS
+    </p>
+  </div>
+  <div class="col-md-3 col-md-offset-1 well">
+    <h2>Upload Form</h2>
+    <%= form_for @sheet, :url => '/quoted', :role => 'form', :html => { :multipart => true } do |form| %>
+      <div class="form-group">
+        <%= label_tag(:title, 'Name for CSV: ') %>
+        <%= form.text_field :title, :placeholder => 'MyFrontlineCompatibleCSV', :class => 'form-control' %>
+
+      </div>
+      <div class="form-group">
+        <%= label_tag(:sheet, 'Choose file to upload: ') %>
+        <%= form.file_field :sheet %>
+      </div>
+      <div class="form-group">
+        <%= form.submit "Convert!", :class => 'btn btn-default' %>
+      </div>
+    <% end %>
+  </div>
+</div>
