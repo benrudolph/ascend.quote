@@ -16,7 +16,6 @@ class ApplicationController < ActionController::Base
     case File.extname(fullname)
     when '.xlsx'
       roo_sheet = Roo::Excelx.new(sheet.sheet.path)
-      break
     else
       render status: :bad_request
     end
