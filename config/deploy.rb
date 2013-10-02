@@ -40,4 +40,4 @@ task :simlink_database, :roles => :app do
   run "ln -s ~/quote-it.yml /var/www/quote-it/current/config/database.yml"
 end
 
-after "deploy", :simlink_database
+after "deploy:update_code", :simlink_database
