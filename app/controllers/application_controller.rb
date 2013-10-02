@@ -16,6 +16,12 @@ class ApplicationController < ActionController::Base
     case File.extname(fullname)
     when '.xlsx'
       roo_sheet = Roo::Excelx.new(sheet.sheet.path)
+    when '.xls'
+      roo_sheet = Roo::Excel.new(sheet.sheet.path)
+    when '.csv'
+      roo_sheet = Roo::CSV.new(sheet.sheet.path)
+    when '.ods'
+      roo_sheet = Roo::OpenOffice.new(sheet.sheet.path)
     else
       render status: :bad_request
     end
