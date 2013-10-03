@@ -1,0 +1,19 @@
+.success {
+  color: #468847;
+  background-color: #dff0d8;
+}
+
+.fail {
+  background-color: #fcf2f2;
+  color: #d9534f;
+}
+
+.success:before {
+  content: '✔';
+  margin-right: 6px;
+}
+
+.fail:before {
+  content: '𝝬';
+  margin-right: 6px;
+}
