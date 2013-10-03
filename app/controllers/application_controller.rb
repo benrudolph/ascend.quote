@@ -9,33 +9,11 @@ class ApplicationController < ActionController::Base
   end
 
   def validate
-    status = {
-      :name => false,
-      :mobile_number => false,
-      :plus => false
-    }
 
     sheet = Sheet.create(params[:sheet])
 
-    roo_sheet = sheet.to_roo_sheet
 
-    render status: :bad_request and return unless roo_sheet
-
-    header_idx = roo_sheet.first_row
-    column_start = roo_sheet.first_column
-    column_end = roo_sheet.column_end
-
-    [column_start..column_end].each do |idx|
-      value = roo_sheet.cell(header_idx, idx)
-
-      if value.downcase == "name"
-        status[:name] = true
-      elsif value.downcase == "mobile number"
-        status[:mobile_number] = true
-      end
-    end
-
-    render :json => status
+    render :json => sheet.status
   end
 
   def quoted

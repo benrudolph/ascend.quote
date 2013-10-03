@@ -12,7 +12,13 @@ $(document).ready () =>
       contentType: false,
     ).fail((xhr, st, err) =>
       console.log err
-    ).then((st) =>
-      console.log st
+    ).then((data) =>
+
+      data.forEach (d) =>
+        $rule = $('.' + d.rule)
+        $rule.removeClass('success fail warning')
+        $rule.addClass(d.status)
+
+
     ))
 

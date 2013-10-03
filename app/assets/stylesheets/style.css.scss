@@ -8,12 +8,25 @@
   color: #d9534f;
 }
 
+.warning {
+  color: #f0ad4e;
+  background-color: #fefbed;
+}
+
+.status:before {
+  width: 1.4em;
+  display:inline-block;
+  text-align: center;
+}
+
 .success:before {
   content: '✔';
-  margin-right: 6px;
 }
 
 .fail:before {
   content: '𝝬';
-  margin-right: 6px;
+}
+
+.warning:before {
+  content: '!';
 }
