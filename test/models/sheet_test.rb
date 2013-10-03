@@ -47,9 +47,9 @@ class SheetTest < ActiveSupport::TestCase
     s = fixture_file_upload('mobile_success.xlsx','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
 
     sheet = Sheet.create({
-        :sheet => s,
-        :title => 'my title'
-      })
+      :sheet => s,
+      :title => 'my title'
+    })
 
     status = sheet.status
 
@@ -60,5 +60,23 @@ class SheetTest < ActiveSupport::TestCase
     assert_equal :fail, status[name_idx][:status]
     assert_equal :success, status[mobile_idx][:status]
     assert_equal :fail, status[plus_idx][:status]
+  end
+
+  test "add plus signs" do
+    s = fixture_file_upload('success.xlsx','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+
+    sheet = Sheet.create({
+      :sheet => s,
+      :title => 'my title'
+    })
+
+    csv_file = sheet.properly_format
+
+    mobile_idx = 1
+    CSV.foreach(csv_file) do |row|
+      assert row[mobile_idx].starts_with? '+' unless row[mobile_idx].is_a?(String)
+    end
+
+
   end
 end

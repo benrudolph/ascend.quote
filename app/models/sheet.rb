@@ -24,7 +24,53 @@ class Sheet < ActiveRecord::Base
 
   end
 
-  def status
+  # returns csv of excel sheet with quotes and plus signs
+  def properly_format
+    roo_sheet = self.to_roo_sheet
+
+    return nil unless roo_sheet
+
+    csv_file = "#{self.filename}.csv"
+
+
+    CSV.open(csv_file, 'wb', {:force_quotes => true}) do |csv|
+      roo_sheet.each(headers(roo_sheet)) do |row|
+        parsed_row = row.map do |pair|
+          value = pair[1]
+          ret = value
+          # If decimal with denom of 1 then it was probably an integer
+          ret = value.to_i if value.is_a?(Float) && value.denominator == 1
+          if pair[0] == :"mobile number" && !value.is_a?(String)
+            ret = "+#{ret}"
+          end
+          ret.to_s
+        end
+        next if (parsed_row.select { |value| !value.empty? }).length == 0
+        csv << parsed_row
+      end
+    end
+
+    return csv_file
+
+  end
+
+  def headers(roo_sheet)
+    header_idx = roo_sheet.first_row
+    column_start = roo_sheet.first_column
+    column_end = roo_sheet.last_column
+
+    headers = {}
+
+    Array(column_start..column_end).each_with_index do |idx|
+      value = roo_sheet.cell(header_idx, idx)
+      headers[value.downcase.to_sym] = value
+    end
+
+    return headers
+  end
+
+
+  def status(options = {})
     status = [
       {
         :rule => :name,
@@ -41,7 +87,7 @@ class Sheet < ActiveRecord::Base
     ]
     return status unless self.sheet.file?
 
-    roo_sheet = self.to_roo_sheet
+    roo_sheet = options[:roo_sheet] || self.to_roo_sheet
 
     header_idx = roo_sheet.first_row
     column_start = roo_sheet.first_column
