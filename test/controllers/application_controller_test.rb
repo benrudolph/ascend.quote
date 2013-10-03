@@ -6,15 +6,13 @@ class ApplicationControllerTest < ActionController::TestCase
   end
 
   test "basic xlsx convertion" do
-    sheet = ActionDispatch::Http::UploadedFile.new({
-      :filename => 'test.xlsx',
-      :content_type => "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-      :tempfile => File.new("#{Rails.root}/test/fixtures/test.xlsx")
-    })
+    sheet = fixture_file_upload('./test.xlsx', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
 
-    post :quoted => {
-      :sheet => sheet,
-      :title => 'My new title'
+    post :quoted, {
+      :sheet => {
+        :sheet => sheet,
+        :title => 'My new title'
+      }
     }
 
     assert_response :success

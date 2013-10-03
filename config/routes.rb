@@ -6,6 +6,7 @@ QuoteIt::Application.routes.draw do
   root 'application#index'
 
   post 'quoted' => 'application#quoted'
+  post 'validate' => 'application#validate'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

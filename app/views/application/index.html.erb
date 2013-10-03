@@ -36,8 +36,13 @@
       </div>
       <div class="form-group">
         <%= label_tag(:sheet, 'Choose file to upload: ') %>
-        <%= form.file_field :sheet %>
+        <%= form.file_field :sheet, :id => 'spreadsheet' %>
       </div>
+      <ul class="list-group">
+        <li class="list-group-item">Has "Name" field</li>
+        <li class="list-group-item">Has "Mobile Number" field</li>
+        <li class="list-group-item">Has + sign for phone number</li>
+      </ul>
       <div class="form-group">
         <%= form.submit "Convert!", :class => 'btn btn-default' %>
       </div>

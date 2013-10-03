@@ -8,25 +8,44 @@ class ApplicationController < ActionController::Base
     @sheet = Sheet.new
   end
 
-  def quoted
-    sheet = Sheet.create(params[:sheet])
-    fullname = sheet.sheet.original_filename
+  def validate
+    status = {
+      :name => false,
+      :mobile_number => false,
+      :plus => false
+    }
 
-    roo_sheet = nil
-    case File.extname(fullname)
-    when '.xlsx'
-      roo_sheet = Roo::Excelx.new(sheet.sheet.path)
-    when '.xls'
-      roo_sheet = Roo::Excel.new(sheet.sheet.path)
-    when '.csv'
-      roo_sheet = Roo::CSV.new(sheet.sheet.path)
-    when '.ods'
-      roo_sheet = Roo::OpenOffice.new(sheet.sheet.path)
-    else
-      render status: :bad_request
+    sheet = Sheet.create(params[:sheet])
+
+    roo_sheet = sheet.to_roo_sheet
+
+    render status: :bad_request and return unless roo_sheet
+
+    header_idx = roo_sheet.first_row
+    column_start = roo_sheet.first_column
+    column_end = roo_sheet.column_end
+
+    [column_start..column_end].each do |idx|
+      value = roo_sheet.cell(header_idx, idx)
+
+      if value.downcase == "name"
+        status[:name] = true
+      elsif value.downcase == "mobile number"
+        status[:mobile_number] = true
+      end
     end
 
-    csv_file = "#{File.basename(fullname, File.extname(fullname))}.csv"
+    render :json => status
+  end
+
+  def quoted
+    sheet = Sheet.create(params[:sheet])
+
+    roo_sheet = sheet.to_roo_sheet
+
+    render status: :bad_request and return unless roo_sheet
+
+    csv_file = "#{sheet.filename}.csv"
     CSV.open(csv_file, 'wb', {:force_quotes => true}) do |csv|
       roo_sheet.each do |row|
         parsed_row = row.map do |value|
@@ -43,4 +62,5 @@ class ApplicationController < ActionController::Base
     send_file csv_file, :type => 'text/csv; charset=iso-8859-1; header=present', :disposition => "attachment;data=#{csv_file}"
 
   end
+
 end
