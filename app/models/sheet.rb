@@ -26,6 +26,7 @@ class Sheet < ActiveRecord::Base
 
   # returns file name without extension
   def filename
+    return self.title unless self.title.empty?
     fullname = self.sheet.original_filename
     File.basename(fullname, File.extname(fullname))
   end
