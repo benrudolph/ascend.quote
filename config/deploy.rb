@@ -40,3 +40,10 @@ task :simlink_database, :roles => :app do
   run "ln -s ~/quote-it.yml /var/www/quote-it/current/config/database.yml"
 end
 
+task :run_migrations, :roles => :app do
+  run "RAILS_ENV=production rake db:migrate"
+  run "RAILS_ENV=development rake db:migrate"
+end
+
+after 'deploy', :run_migrations
+
