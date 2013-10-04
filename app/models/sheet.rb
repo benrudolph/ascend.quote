@@ -1,8 +1,12 @@
 class Sheet < ActiveRecord::Base
   attr_accessible :sheet, :title
   has_attached_file :sheet
-  validates_attachment :sheet, :presence => true,
-      :content_type => { :content_type => "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" }
+  validates_attachment :sheet, :presence => true
+
+  SHEET_PATH = 'converted_sheets'
+
+  require 'csv'
+  require 'securerandom'
 
   def to_roo_sheet
 
@@ -26,14 +30,16 @@ class Sheet < ActiveRecord::Base
 
   # returns csv of excel sheet with quotes and plus signs
   def properly_format
+    return nil unless self.sheet.file?
+
     roo_sheet = self.to_roo_sheet
 
     return nil unless roo_sheet
 
     csv_file = "#{self.filename}.csv"
+    csv_hash = SecureRandom.hex
 
-
-    CSV.open(csv_file, 'wb', {:force_quotes => true}) do |csv|
+    CSV.open("#{SHEET_PATH}/#{csv_hash}", 'wb', {:force_quotes => true}) do |csv|
       roo_sheet.each(headers(roo_sheet)) do |row|
         parsed_row = row.map do |pair|
           value = pair[1]
@@ -50,7 +56,7 @@ class Sheet < ActiveRecord::Base
       end
     end
 
-    return csv_file
+    return { :csv_file => csv_file, :csv_hash => csv_hash }
 
   end
 
@@ -63,6 +69,7 @@ class Sheet < ActiveRecord::Base
 
     Array(column_start..column_end).each_with_index do |idx|
       value = roo_sheet.cell(header_idx, idx)
+      next unless value
       headers[value.downcase.to_sym] = value
     end
 

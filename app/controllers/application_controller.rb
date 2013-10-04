@@ -1,7 +1,6 @@
 class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
-  require 'csv'
   protect_from_forgery with: :exception
 
   def index
@@ -19,12 +18,12 @@ class ApplicationController < ActionController::Base
   def quoted
     sheet = Sheet.create(params[:sheet])
 
-    csv_file = sheet.properly_format
+    ret = sheet.properly_format
 
-    render status: :bad_request and return unless csv_file
+    render :nothing => true, status: :bad_request and return unless ret
 
 
-    send_file csv_file, :type => 'text/csv; charset=iso-8859-1; header=present', :disposition => "attachment;data=#{csv_file}"
+    send_file ret[:csv_file], :type => 'text/csv; charset=iso-8859-1; header=present', :disposition => "attachment;data=#{ret[:csv_file]}"
 
   end
 
