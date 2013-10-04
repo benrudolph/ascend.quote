@@ -16,7 +16,7 @@ set :deploy_via, :remote_cache
 set :rails_env,     "production"
 
 
-set :user, :root
+set :user, :deploy
 set :deploy_to, "/var/www/#{application}"
 set :use_sudo, false
 set :ssh_options, { :forward_agent => true }
@@ -40,10 +40,5 @@ task :simlink_database, :roles => :app do
   run "ln -s ~/quote-it.yml /var/www/quote-it/current/config/database.yml"
 end
 
-task :run_migrations, :roles => :app do
-  run "RAILS_ENV=production rake db:migrate"
-  run "RAILS_ENV=development rake db:migrate"
-end
-
-after 'deploy', :run_migrations
+after 'deploy', 'deploy:migrate'
 
