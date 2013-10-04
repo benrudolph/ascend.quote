@@ -23,7 +23,7 @@ class ApplicationController < ActionController::Base
     render :nothing => true, status: :bad_request and return unless ret
 
 
-    send_file "#{Sheet::SHEET_PATH}/#{ret[:csv_hash]}", :type => 'text/csv; charset=iso-8859-1; header=present', :disposition => "attachment;data=#{ret[:csv_file]}"
+    send_file "#{Sheet::SHEET_PATH}/#{ret[:csv_hash]}", :type => 'text/csv; charset=iso-8859-1; header=present', :disposition => "attachment;data=#{ret[:csv_file]}", :filename => ret[:csv_file]
 
   end
 
